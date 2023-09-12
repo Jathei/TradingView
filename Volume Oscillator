@@ -1,0 +1,13 @@
+//@version=5
+indicator(title="Volume Oscillator [Tam]", shorttitle="Volume Osc [Tam]", format=format.percent, precision=2, timeframe="", timeframe_gaps=true)
+var cumVol = 0.
+cumVol += nz(volume)
+if barstate.islast and cumVol == 0
+    runtime.error("No volume is provided by the data vendor.")
+shortlen = input.int(1, minval=1, title = "Short Length")
+longlen = input.int(14, minval=1, title = "Long Length")
+short = ta.ema(volume, shortlen)
+long = ta.ema(volume, longlen)
+osc = 100 * (short - long) / long
+hline(144, color = #ffffffc0, title = "Zero", linestyle = hline.style_solid)
+plot(osc, color = #2195a9e8)
